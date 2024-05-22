@@ -209,7 +209,34 @@
             document.getElementById('postContent').value = '';
             fileInput.value = ''; // 重置文件输入
         }
+    }    // Function to save posts to localStorage
+    function savePosts() {
+        const postsDiv = document.getElementById('posts');
+        const posts = postsDiv.innerHTML;
+        localStorage.setItem('userPosts', posts);
     }
+
+    // Function to load saved posts from localStorage
+    function loadPosts() {
+        const postsDiv = document.getElementById('posts');
+        const savedPosts = localStorage.getItem('userPosts');
+        if (savedPosts) {
+            postsDiv.innerHTML = savedPosts;
+            // Add event listeners to delete buttons of loaded posts
+            const deleteButtons = postsDiv.querySelectorAll('.delete-btn');
+            deleteButtons.forEach(deleteBtn => {
+                deleteBtn.onclick = function() {
+                    postsDiv.removeChild(deleteBtn.parentElement);
+                    savePosts(); // Update storage after deleting a post
+                };
+            });
+        }
+    }
+
+    // Load saved posts when the page loads
+    window.onload = function() {
+        loadPosts();
+    };
 </script>
 
 </body>
