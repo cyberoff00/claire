@@ -11,7 +11,7 @@
             padding: 5px;
             background-color: #f5f5f5;
             color: #333;
-            line-height: 1.6; /* Adjust line-height for better readability */
+            line-height: 1.6;
         }
         header {
             background-color: #000;
@@ -24,7 +24,7 @@
         }
         .container {
             width: 80%;
-            margin: 20px auto; /* Added margin-top for better spacing */
+            margin: 20px auto;
             padding: 20px;
         }
         h1, h2, h3 {
@@ -63,7 +63,7 @@
             position: relative;
         }
         .post img {
-            max-width: 400px; /* Limiting image size */
+            max-width: 400px;
             max-height: 400px;
             height: auto;
             display: block;
@@ -85,7 +85,7 @@
         textarea {
             width: 100%;
             padding: 10px;
-            margin-bottom: 10px; /* Added margin-bottom for spacing */
+            margin-bottom: 10px;
         }
     </style>
 </head>
@@ -99,8 +99,6 @@
 </header>
 
 <div class="container">
-    <!-- Your content goes here -->
-
     <section class="section posts-section">
         <h2>My Posts</h2>
         <div id="posts">
@@ -116,7 +114,6 @@
     <p>&copy; 2024 Claire Yang</p>
 </footer>
 
-<!-- Firebase Scripts -->
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
 <script>
@@ -169,7 +166,10 @@ const firebaseConfig = {
     function savePostToDatabase(post) {
         const newPostRef = database.ref('posts').push();
         newPostRef.set(post).then(() => {
+            console.log('Post saved to database');
             loadPosts();
+        }).catch((error) => {
+            console.error('Error saving post to database:', error);
         });
     }
 
@@ -178,6 +178,7 @@ const firebaseConfig = {
         const postsDiv = document.getElementById('posts');
         postsDiv.innerHTML = ''; // Clear existing posts
         database.ref('posts').orderByChild('timestamp').on('value', (snapshot) => {
+            postsDiv.innerHTML = ''; // Clear posts before adding them
             snapshot.forEach((childSnapshot) => {
                 const post = childSnapshot.val();
                 const postDiv = document.createElement('div');
@@ -190,7 +191,7 @@ const firebaseConfig = {
                 if (post.imageUrl) {
                     const image = document.createElement('img');
                     image.src = post.imageUrl;
-                    image.style.maxWidth = '200px'; // Limiting image size
+                    image.style.maxWidth = '200px';
                     image.style.maxHeight = '200px';
                     image.style.height = 'auto';
                     image.style.display = 'block';
