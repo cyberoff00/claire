@@ -113,7 +113,6 @@
 <footer>
     <p>&copy; 2024 Claire Yang</p>
 </footer>
-
 <!-- Firebase scripts -->
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
@@ -135,6 +134,12 @@
     const database = firebase.database();
     const storage = firebase.storage();
 
+    // Debugging information
+    console.log("Firebase initialized with the following config:", firebaseConfig);
+</script>
+
+
+ <script>
     // Function to add a new post
     function addPost() {
         const content = document.getElementById('postContent').value;
@@ -154,7 +159,11 @@
                     storageRef.getDownloadURL().then((url) => {
                         post.imageUrl = url;
                         savePostToDatabase(post);
+                    }).catch(error => {
+                        console.error("Error getting download URL:", error);
                     });
+                }).catch(error => {
+                    console.error("Error uploading file:", error);
                 });
             } else {
                 savePostToDatabase(post);
@@ -162,6 +171,8 @@
 
             document.getElementById('postContent').value = '';
             fileInput.value = ''; // Reset file input
+        } else {
+            console.warn("No content or file provided.");
         }
     }
 
@@ -169,7 +180,7 @@
     function savePostToDatabase(post) {
         const newPostRef = database.ref('posts').push();
         newPostRef.set(post).then(() => {
-            console.log('Post saved to database');
+            console.log('Post saved to database:', post);
             loadPosts();
         }).catch((error) => {
             console.error('Error saving post to database:', error);
@@ -204,6 +215,8 @@
 
                 postsDiv.appendChild(postDiv);
             });
+        }, (error) => {
+            console.error('Error loading posts from database:', error);
         });
     }
 
@@ -213,5 +226,3 @@
     };
 </script>
 
-</body>
-</html>
