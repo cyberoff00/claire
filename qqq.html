@@ -78,6 +78,9 @@
             border-radius: 4px;
             cursor: pointer;
         }
+        .line-height-1-5 {
+            line-height: 1.5;
+        }
     </style>
 </head>
 <body>
@@ -92,7 +95,7 @@
 <div class="container">
     <section class="section">
         <h2>About Me</h2>
-        <p>I am Claire Yang, a data analyst with extensive experience in marketplace, e-commerce, product area. My expertise lies in analyzing complex data, creating insightful visualizations, and driving business growth through data-driven decisions. Regarding my personal interest, basically, I will say my MBTI is INFJ, which means I'm a blend of insightful intuition and heartfelt empathy, always seeking to understand the deeper layers of life and people. My love for reading transports me to different worlds and perspectives, while films offer a visual and emotional narrative that I find endlessly fascinating. The gym is my sanctuary, where I balance body and mind, pushing my limits and embracing strength. Exploring different niche tastes is my way of savoring life's unique flavors and experiences, from obscure books to indie films and culinary adventures..</p>
+        <p class="line-height-1-5">I am Claire Yang, a data analyst with extensive experience in marketplace, e-commerce, product area. My expertise lies in analyzing complex data, creating insightful visualizations, and driving business growth through data-driven decisions. Regarding my personal interest, basically, I will say my MBTI is INFJ, which means I'm a blend of insightful intuition and heartfelt empathy, always seeking to understand the deeper layers of life and people. My love for reading transports me to different worlds and perspectives, while films offer a visual and emotional narrative that I find endlessly fascinating. The gym is my sanctuary, where I balance body and mind, pushing my limits and embracing strength. Exploring different niche tastes is my way of savoring life's unique flavors and experiences, from obscure books to indie films and culinary adventures..</p>
     </section>
 <section class="section">
         <h2>Experience</h2>
@@ -195,12 +198,11 @@
                 const image = document.createElement('img');
                 image.src = URL.createObjectURL(file);
                 image.style.maxWidth = '200px'; // Limiting image size
-               
-            image.style.maxHeight = '200px';
-            image.style.height = 'auto';
-            image.style.display = 'block';
-            image.style.marginTop = '10px';
-            postDiv.appendChild(image);
+                image.style.maxHeight = '200px';
+                image.style.height = 'auto';
+                image.style.display = 'block';
+                image.style.marginTop = '10px';
+                postDiv.appendChild(image);
             }
 
             const deleteBtn = document.createElement('button');
