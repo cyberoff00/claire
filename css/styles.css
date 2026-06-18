@@ -73,6 +73,7 @@ button:hover { background: var(--hi); }
 #topbar .tb-left { display: flex; gap: 12px; }
 #topbar .tb-right { display: flex; gap: 8px; align-items: center; }
 #tb-day { color: var(--amber); font-weight: bold; }
+#tb-total { color: var(--teal); font-weight: bold; }
 #tb-gongfen { color: var(--crt-green); font-weight: bold; }
 #tb-streak { color: var(--amber); }
 #topbar button { padding: 3px 7px; font-size: 11px; }
