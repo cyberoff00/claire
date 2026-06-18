@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>THE DEPARTMENT — 部门</title>
+  <link rel="stylesheet" href="./css/styles.css" />
+</head>
+<body>
+  <!-- CRT 外壳：占位，可被 assets/ui-crt-bezel.png 替换 -->
+  <div id="crt">
+    <div id="app">
+      <!-- 顶栏：日期 / 出勤 / 工分 / 连续出勤 -->
+      <header id="topbar">
+        <div class="tb-left">
+          <span id="tb-day">出勤第 — 天</span>
+          <span id="tb-date">————</span>
+        </div>
+        <div class="tb-right">
+          <span id="tb-clock" title="今日在岗时长">⏱ 00:00:00</span>
+          <span id="tb-gongfen" title="工时">◆ 0</span>
+          <span id="tb-streak" title="连续出勤">🔥 0</span>
+          <button id="btn-bosskey" title="老板键：按 B 或 ` 快速切换，任意键恢复">看起来很忙 (B)</button>
+          <button id="btn-saveio" title="导出/导入存档（换设备、清缓存的兜底）">存档</button>
+          <button id="btn-clockout" title="下班打卡">下班打卡</button>
+        </div>
+      </header>
+
+      <main id="main">
+        <!-- 左：工位场景 -->
+        <section id="stage-wrap">
+          <div id="stage"><!-- 场景与精灵由 scene.js 注入 --></div>
+          <div id="bubble" class="hidden"><span id="bubble-text"></span></div>
+        </section>
+
+        <!-- 右：工具面板 -->
+        <aside id="tools">
+          <nav id="tabs">
+            <button class="tab active" data-tab="sticky">便利贴</button>
+            <button class="tab" data-tab="pomodoro">精炼时段</button>
+            <button class="tab" data-tab="countdown">倒计时</button>
+            <button class="tab" data-tab="shop">工位商店</button>
+          </nav>
+          <div class="tabpanes">
+            <div class="pane active" data-pane="sticky" id="pane-sticky"></div>
+            <div class="pane" data-pane="pomodoro" id="pane-pomodoro"></div>
+            <div class="pane" data-pane="countdown" id="pane-countdown"></div>
+            <div class="pane" data-pane="shop" id="pane-shop"></div>
+          </div>
+        </aside>
+      </main>
+    </div>
+
+    <!-- 扫描线 / 暗角 后处理层 -->
+    <div id="crt-fx"></div>
+  </div>
+
+  <!-- 早安屏 -->
+  <div id="screen-morning" class="screen hidden">
+    <div class="screen-card">
+      <div class="screen-head">THE DEPARTMENT</div>
+      <h1 id="morning-day">新的一天</h1>
+      <p id="morning-date"></p>
+      <p id="morning-quip" class="quip"></p>
+      <button id="btn-start-day">开始上班</button>
+    </div>
+  </div>
+
+  <!-- 下班结算屏 -->
+  <div id="screen-summary" class="screen hidden">
+    <div class="screen-card">
+      <div class="screen-head">今 日 考 勤 单</div>
+      <h1>下班</h1>
+      <ul id="summary-stats"></ul>
+      <p id="summary-quip" class="quip"></p>
+      <button id="btn-close-summary">打卡离开</button>
+    </div>
+  </div>
+
+  <!-- 老板键假屏 -->
+  <div id="bosskey" class="hidden">
+    <div id="bosskey-fake"><!-- bosskey.js 注入假报表，可被 assets/ui-bosskey-fakescreen.png 替换 --></div>
+    <div id="bosskey-hint">按任意键 / 点击 恢复</div>
+  </div>
+
+  <script type="module" src="./js/main.js"></script>
+</body>
+</html>
