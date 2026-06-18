@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claire Yang - Data Analyst</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 5px;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        header {
+            background-color: #000;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+        header h1 {
+            color: #fff;
+        }
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+        .section {
+            margin-bottom: 40px;
+        }
+        .experience, .project, .skills, .posts-section {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .experience h3, .project h3, .skills h3 {
+            margin-top: 0;
+        }
+        footer {
+            background-color: #000;
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+        a {
+            color: #007bff;
+        }
+        .post {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            position: relative;
+        }
+        .post img {
+            max-width: 400px;
+            max-height: 400px;
+            height: auto;
+            display: block;
+            margin-top: 10px;
+        }
+        .delete-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #ff4d4d;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .line-height-1-5 {
+            line-height: 1.5;
+        }
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Claire Yang - Data Analyst</h1>
+    <nav>
+        <a href="https://www.linkedin.com/in/claire-yang-a37245169/" target="_blank">LinkedIn</a>
+    </nav>
+</header>
+
+<div class="container">
+    <section class="section posts-section">
+        <h2>My Posts</h2>
+        <div id="posts">
+            <!-- Posts will be dynamically added here -->
+        </div>
+        <input type="file" id="fileInput" accept="image/*">
+        <textarea id="postContent" rows="4" placeholder="Share your thoughts..."></textarea>
+        <button onclick="addPost()">Post</button>
+    </section>
+</div>
+
+<footer>
+    <p>&copy; 2024 Claire Yang</p>
+</footer>
+<!-- Firebase scripts -->
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js"></script>
+<script>
+    // Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyDBATmZw2Rc-mg8kJegu6DNZtvelF-EjzE",
+        authDomain: "carbon-feat-417114.firebaseapp.com",
+        projectId: "carbon-feat-417114",
+        storageBucket: "carbon-feat-417114.appspot.com",
+        messagingSenderId: "888085107441",
+        appId: "1:888085107441:web:c51da19703e6f8afc84f50",
+        measurementId: "G-9VNWCYSKPW"
+    };
+
+    // Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+    const storage = firebase.storage();
+
+    // Debugging information
+    console.log("Firebase initialized with the following config:", firebaseConfig);
+</script>
+
+
+ <script>
+    // Function to add a new post
+    function addPost() {
+        const content = document.getElementById('postContent').value;
+        const fileInput = document.getElementById('fileInput');
+
+        if (content.trim() || fileInput.files.length > 0) {
+            const post = {
+                content: content,
+                imageUrl: '',
+                timestamp: Date.now()
+            };
+
+            if (fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                const storageRef = storage.ref('images/' + file.name);
+                storageRef.put(file).then(() => {
+                    storageRef.getDownloadURL().then((url) => {
+                        post.imageUrl = url;
+                        savePostToDatabase(post);
+                    }).catch(error => {
+                        console.error("Error getting download URL:", error);
+                    });
+                }).catch(error => {
+                    console.error("Error uploading file:", error);
+                });
+            } else {
+                savePostToDatabase(post);
+            }
+
+            document.getElementById('postContent').value = '';
+            fileInput.value = ''; // Reset file input
+        } else {
+            console.warn("No content or file provided.");
+        }
+    }
+
+    // Function to save post to Firebase
+    function savePostToDatabase(post) {
+        const newPostRef = database.ref('posts').push();
+        newPostRef.set(post).then(() => {
+            console.log('Post saved to database:', post);
+            loadPosts();
+        }).catch((error) => {
+            console.error('Error saving post to database:', error);
+        });
+    }
+
+    // Function to load posts from Firebase
+    function loadPosts() {
+        const postsDiv = document.getElementById('posts');
+        postsDiv.innerHTML = ''; // Clear existing posts
+        database.ref('posts').orderByChild('timestamp').on('value', (snapshot) => {
+            postsDiv.innerHTML = ''; // Clear posts before adding them
+            snapshot.forEach((childSnapshot) => {
+                const post = childSnapshot.val();
+                const postDiv = document.createElement('div');
+                postDiv.className = 'post';
+
+                const postText = document.createElement('p');
+                postText.textContent = post.content;
+                postDiv.appendChild(postText);
+
+                if (post.imageUrl) {
+                    const image = document.createElement('img');
+                    image.src = post.imageUrl;
+                    image.style.maxWidth = '200px';
+                    image.style.maxHeight = '200px';
+                    image.style.height = 'auto';
+                    image.style.display = 'block';
+                    image.style.marginTop = '10px';
+                    postDiv.appendChild(image);
+                }
+
+                postsDiv.appendChild(postDiv);
+            });
+        }, (error) => {
+            console.error('Error loading posts from database:', error);
+        });
+    }
+
+    // Load posts when the page loads
+    window.onload = function() {
+        loadPosts();
+    };
+</script>
+
