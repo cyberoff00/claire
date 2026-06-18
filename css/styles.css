@@ -246,3 +246,45 @@ button:hover { background: var(--hi); }
 ::-webkit-scrollbar { width: 12px; }
 ::-webkit-scrollbar-track { background: var(--bg-beige-dk); }
 ::-webkit-scrollbar-thumb { background: var(--ink); border: 2px solid var(--bg-beige-dk); }
+
+/* ===== 移动端适配 ===== */
+@media (max-width: 760px) {
+  /* 缩小 CRT 外壳，把空间留给内容 */
+  #crt { padding: 6px; }
+  #crt::before { inset: 3px; border-width: 6px; border-radius: 10px; }
+  #app { border-radius: 4px; }
+
+  /* 顶栏允许换行，避免按钮/状态溢出被裁掉 */
+  #topbar {
+    flex-wrap: wrap; gap: 6px 10px; padding: 6px 8px; justify-content: center;
+  }
+  #topbar .tb-left,
+  #topbar .tb-right { flex-wrap: wrap; justify-content: center; }
+
+  /* 主区从「左右分栏」改为「上下堆叠」 */
+  #main { flex-direction: column; }
+  #stage-wrap { flex: 0 0 46vh; min-height: 220px; }
+  #tools {
+    width: 100%; flex: 1 1 auto; min-height: 0;
+    border-left: none; border-top: 2px solid var(--ink);
+  }
+
+  /* 摄像机条：窄屏换行，隐藏键盘提示（手机用不到键盘） */
+  #cam-btns { flex-wrap: wrap; max-width: calc(100% - 16px); }
+  #cam-btns .cam-hint { display: none; }
+
+  /* 早安/结算弹屏不再固定 320 宽 */
+  .screen-card {
+    min-width: 0; width: calc(100vw - 36px); max-width: 460px; padding: 22px 20px;
+  }
+  .screen-card h1 { font-size: 24px; }
+
+  .tabpanes { -webkit-overflow-scrolling: touch; }
+}
+
+/* 很窄的手机再压一档 */
+@media (max-width: 420px) {
+  #stage-wrap { flex-basis: 42vh; }
+  .shop-grid { grid-template-columns: 1fr; }
+  .pomo-time { font-size: 36px; }
+}
