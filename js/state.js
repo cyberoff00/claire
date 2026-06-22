@@ -31,6 +31,15 @@ function defaultState() {
       lastLabel: '',
       lastMinutes: 25,
     },
+    pet: {                     // 养成宠物「摸鱼搭子」（见 pet.js）
+      name: '小咸', species: 'fish',
+      level: 1, exp: 0, fullness: 100,
+      lastUpdateTs: 0,         // 上次结算饱食度的时间戳（0=首次按当前时间初始化）
+      lastPlayTs: 0,
+      lastGiftDate: null,      // 上次领每日红包的日期
+      bornDate: null,          // 领养日期
+      totalFed: 0,
+    },
   };
 }
 
@@ -45,6 +54,8 @@ function load() {
     for (const id in s.owned) if (s.equipped[id] === undefined) s.equipped[id] = true;
     // 迁移：老存档没有 joinDate → 用最早一条出勤记录补
     if (!s.joinDate) s.joinDate = (s.history[0] && s.history[0].date) || s.lastClockOutDate || null;
+    // 迁移：老存档没有 pet（或缺字段）→ 补齐默认摸鱼搭子
+    s.pet = Object.assign(defaultState().pet, s.pet || {});
     return s;
   } catch (e) {
     console.warn('存档读取失败，重置', e);

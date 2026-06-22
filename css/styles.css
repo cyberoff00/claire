@@ -216,6 +216,28 @@ button:hover { background: var(--hi); }
 .shop-card button.btn-remove { background: var(--rust); color: var(--hi); }
 .shop-card .price { color: var(--crt-green); font-weight:bold; }
 
+/* 摸鱼搭子（养成宠物） */
+.pet-card { text-align: center; }
+.pet-face {
+  font-size: 64px; line-height: 1; margin: 6px 0 2px;
+  filter: drop-shadow(2px 3px 0 var(--shadow));
+  animation: petbob 2.6s ease-in-out infinite;
+}
+@keyframes petbob { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-5px) } }
+.pet-face.mood-happy  { animation-duration: 1.5s; }
+.pet-face.mood-hungry { animation-duration: 4.5s; opacity: .65; filter: grayscale(.5); }
+.pet-name { display:flex; align-items:center; justify-content:center; gap:6px; font-size:15px; }
+.pet-name .pet-rename { background:none; border:none; box-shadow:none; padding:0 2px; font-size:13px; color:var(--ink-soft); }
+.pet-stage { font-size:12px; color:var(--teal); font-weight:bold; margin-top:2px; }
+.pet-mood { font-size:12px; color:var(--ink-soft); margin:2px 0 8px; }
+.pet-bar-label { font-size:11px; color:var(--ink-soft); text-align:left; margin-top:7px; }
+.pet-bar { height:10px; background:var(--bg-beige); border:1px solid var(--ink); border-radius:2px; overflow:hidden; }
+.pet-bar i { display:block; height:100%; transition:width .3s; }
+.pet-btns { display:flex; gap:8px; justify-content:center; margin-top:12px; }
+.pet-btns button { font-size:12px; }
+.pet-gift { font-size:11px; color:var(--rust); font-weight:bold; margin-top:10px; }
+.pet-tip { font-size:11px; color:var(--ink-soft); margin-top:8px; line-height:1.4; }
+
 /* ===== 全屏 屏（早安/结算） ===== */
 .screen {
   position: fixed; inset: 0; z-index: 100;

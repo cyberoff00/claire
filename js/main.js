@@ -5,6 +5,7 @@ import { boot, startDay, clockOut, closeSummary } from './dayCycle.js';
 import { initSticky, initPomodoro, initCountdown, initBossKey, updateCountdown } from './tools.js';
 import { initShop, renderShop } from './shop.js';
 import { initSaveIO } from './save-io.js';
+import { initPet, renderPet } from './pet.js';
 
 // --- 场景 + 摄像机 ---
 renderScene();
@@ -27,6 +28,7 @@ tabs.forEach((tab) => {
     const key = tab.dataset.tab;
     panes.forEach((p) => p.classList.toggle('active', p.dataset.pane === key));
     if (key === 'shop') renderShop();   // 进商店刷新余额
+    if (key === 'pet') renderPet();     // 进宠物页刷新状态
   };
 });
 
@@ -37,6 +39,10 @@ document.getElementById('btn-close-summary').onclick = closeSummary;
 
 // --- 启动日循环（决定继续/补班/新的一天）---
 boot();
+
+// --- 养成宠物（放在 boot 之后：新的一天有早安屏时不抢气泡）---
+initPet();
+
 refreshHud();
 
 // --- 秒级 UI 刷新：倒计时 ---
